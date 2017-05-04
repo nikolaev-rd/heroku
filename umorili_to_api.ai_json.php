@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // Number of quotes, from which quote will be selected random
 $quotes_number = 100;
