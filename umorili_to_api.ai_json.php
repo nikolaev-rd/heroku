@@ -55,7 +55,7 @@ if (isValidJSON($contents)) {
 	print_r(json_encode($arr));
 }
 else {
-	echo "ERROR: JSON from $url isn't correct! Please try again later...";
+	echo "<h1>ERROR</h1> <p>JSON from <a href='$url'>$url</a> isn't correct! Please try again later...";
 }
 
 ?>
