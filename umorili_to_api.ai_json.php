@@ -4,8 +4,8 @@
 $quotes_number = 100;
 
 // REST API URL
-//$url = "http://umori.li/api/get?site=bash.im&num=$quotes_number";
 $url = "http://umori.li/api/random?num=$quotes_number";
+//$url = "http://umori.li/api/get?name=Deti&num=$quotes_number";
 
 
 
@@ -36,6 +36,7 @@ if (is_valid_JSON($contents)) {
 	$json[$n]["elementPureHtml"] = strip_tags($json[$n]["elementPureHtml"]); // remove other HTML tags
 	$json[$n]["elementPureHtml"] = str_replace("&copy;", "©", $json[$n]["elementPureHtml"]); // replace copyright symbol
 	$json[$n]["elementPureHtml"] = str_replace("&trade;", "™", $json[$n]["elementPureHtml"]); // replace copyright symbol
+	$json[$n]["elementPureHtml"] = str_replace("\n\nПроголосовать: \nза, \nпротив", "", $json[$n]["elementPureHtml"]); // remove vote info (det.otg.ru)
 	$json[$n]["link"] = str_replace("/url.html?url=", "", $json[$n]["link"]); // remove API URL prefix
 	$json[$n]["link"] = rawurldecode($json[$n]["link"]); // decode for correct http url in text
 
@@ -56,6 +57,7 @@ if (is_valid_JSON($contents)) {
 		'source' => $json[$n]["site"]
 		);
 		
+	print_r($arr); echo "\n\n";
 	print_r(json_encode($arr));
 	
 	unset($json, $arr); // remove data from memory
