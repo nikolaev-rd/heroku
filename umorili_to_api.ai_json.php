@@ -57,7 +57,7 @@ if (is_valid_JSON($contents)) {
 		'source' => $json[$n]["site"]
 		);
 		
-	print_r($arr); echo "\n\n";
+	//print_r($arr); echo "\n\n";
 	print_r(json_encode($arr));
 	
 	unset($json, $arr); // remove data from memory
