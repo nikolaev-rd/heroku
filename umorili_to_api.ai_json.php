@@ -3,18 +3,22 @@
 // Number of quotes, from which quote will be selected random
 $quotes_number = 100;
 
-// checking for JSON is valid or not
-function isValidJSON($JSON_string) { 
-	json_decode($JSON_string); 
-	return (json_last_error() === JSON_ERROR_NONE); 
-} 
-
+// REST API URL
 //$url = "http://umori.li/api/get?site=bash.im&num=$quotes_number";
 $url = "http://umori.li/api/random?num=$quotes_number";
 
+
+
+// checking for JSON is valid or not
+function is_valid_JSON($JSON_string) { 
+	json_decode($JSON_string); 
+	return (json_last_error() === JSON_ERROR_NONE); 
+}
+
+
 $contents = file_get_contents($url); // get json string from $url
 
-if (isValidJSON($contents)) {
+if (is_valid_JSON($contents)) {
 	$json=json_decode($contents, true);
 	
 	header('Content-type:application/json;charset=utf-8'); // setup header options
@@ -45,7 +49,7 @@ if (isValidJSON($contents)) {
 	}
 
 	$arr = array(
-		'speech' => "Случайная цитата с сайта ".$json[$n]["desc"]." ".$link.": \n\n".$json[$n]["elementPureHtml"], 
+		'speech' => "Случайная цитата с сайта «".$json[$n]["desc"]."» ".$link.": \n\n".$json[$n]["elementPureHtml"], 
 		//'displayText' => "Random quote from ".$json[$n]["name"]."(".$json[$n]["link"]."):\n ".$json[$n]["elementPureHtml"], 
 		//'data' => "", 
 		//'contextOut' => "", 
@@ -53,9 +57,12 @@ if (isValidJSON($contents)) {
 		);
 		
 	print_r(json_encode($arr));
+	
+	unset($json, $arr); // remove data from memory
 }
 else {
-	echo "<h1>ERROR</h1> <p>JSON from <a href='$url'>$url</a> isn't correct! Please try again later...";
+	echo "<h1>ERROR</h1>";
+	echo "<p>JSON response from <a href='$url'>$url</a> is not correct!";
 }
 
 ?>
