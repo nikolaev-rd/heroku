@@ -4,8 +4,8 @@
 $quotes_number = 100;
 
 // REST API URL
-$url = "http://umori.li/api/random?num=$quotes_number";
-//$url = "http://umori.li/api/get?name=Deti&num=$quotes_number";
+$url = "https://umorili.herokuapp.com/api/random?num=$quotes_number";
+//$url = "http://umori.li/api/random?num=$quotes_number";
 
 
 
