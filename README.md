@@ -13,11 +13,9 @@
 
 ## Примеры использования: 
 **Получить случайную цитату с рандомного сайта из числа перечисленных в [конфиге](rss/sites.ini):**
-  - вывод в HTML-формате: https://joker-site.herokuapp.com/?format=html
-  или просто: https://joker-site.herokuapp.com/
+  - вывод в HTML-формате: https://joker-site.herokuapp.com/?format=html или просто: https://joker-site.herokuapp.com/
   - вывод в JSON-формате: https://joker-site.herokuapp.com/?format=json
 
 **Получить случайную цитату с Баша:**
-  - вывод в HTML-формате: https://joker-site.herokuapp.com/?site=bash&format=html
-  или просто: https://joker-site.herokuapp.com/?site=bash
+  - вывод в HTML-формате: https://joker-site.herokuapp.com/?site=bash&format=html или просто: https://joker-site.herokuapp.com/?site=bash
   - вывод в JSON-формате: https://joker-site.herokuapp.com/?site=bash&format=json
