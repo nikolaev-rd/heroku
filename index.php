@@ -9,16 +9,91 @@ isset($_GET['site']) ? $RSS = new RSS($_GET['site']) : $RSS = new RSS();
 
 if ($_GET['format'] == 'json') {
     header('Content-type:application/json;charset=utf-8');
+	
+	$button_joke_text = "Еще шутка";
+	$button_help_text = "Показать справку";
+	
+    
+    $joke_plain_text = 
+		"С сайта «".$RSS->getSiteTitle()."»... \n\n".
+		$RSS->getRssItemTitle()." (".$RSS->getRssItemLink()."): \n".
+		$RSS->CleanUp_HTML($RSS->getRssItemText());
+						
+	$joke_telegram_text = 
+		"С сайта «[".$RSS->getSiteTitle()."](".$RSS->getSiteLink().")»... \n\n".
+		"[".$RSS->getRssItemTitle()."](".$RSS->getRssItemLink()."): \n".
+		$RSS->CleanUp_HTML($RSS->getRssItemText());
+		
+	$joke_slack_text = 
+		"С сайта «<".$RSS->getSiteLink()."|".$RSS->getSiteTitle().">»... \n\n".
+		"<".$RSS->getRssItemLink()."|".$RSS->getRssItemTitle().">: \n".
+		$RSS->CleanUp_HTML($RSS->getRssItemText());
     
     $arr = array(
-		'speech' => "С сайта «".$RSS->getSiteTitle()."» (".$RSS->getSiteLink().")... \n\n".
-					$RSS->getRssItemTitle()." (".$RSS->getRssItemLink()."): \n".
-					$RSS->CleanUp_HTML($RSS->getRssItemText()), 
-		//'displayText' => "", 
-		//'data' => "", 
+		// ответ на запрос
+		'speech' => $joke_plain_text, 
+		
+		// текстовый ответ - на случай если его нет в расширенном ответе
+		'displayText' => $joke_plain_text, 
+		
+		// расширенный ответ...
+		'data' => array (
+			
+			// для Telegram
+			'telegram' => array (
+				'parse_mode' => 'Markdown',
+				'disable_web_page_preview' => 'yes',
+				'text' => $joke_telegram_text,
+				'reply_markup' => array (
+					'keyboard' => array (
+						array (
+							array (
+								'text' => $button_joke_text,
+							),
+						),
+						array (
+							array (
+								'text' => $button_help_text,
+							),
+						),
+					),
+					'resize_keyboard' => true,
+					'one_time_keyboard' => true,
+				),
+			),
+			
+			// для Slack
+			'slack' => array (
+				'text' => $joke_slack_text,
+				'attachments' => array (
+					array (
+						'title' => 'Жми кнопки:',
+						//'text' => 'какой-то текст',
+						'callback_id' => 'quick_buttons',
+						'color' => '#3AA3E3',
+						'actions' => array (
+							array (
+								'name' => 'joke',
+								'text' => $button_joke_text,
+								'type' => 'button',
+								'style' => 'primary',
+								'value' => 'шутка',
+							),
+							array (
+								'name' => 'help',
+								'text' => $button_help_text,
+								'type' => 'button',
+								'value' => 'справка',
+							),
+						),
+					),
+				),
+			),
+		),
+		
 		//'contextOut' => "", 
 		'source' => $RSS->getSiteRssUrl()
-		);
+	);
 	
 	print_r(json_encode($arr));
 }
