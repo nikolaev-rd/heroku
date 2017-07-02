@@ -24,13 +24,13 @@ if ($_GET['format'] == 'json') {
 	if ($RSS->getSiteDisablePreview() == "no") {
 		$joke_telegram_text = 
 			"С сайта «".$RSS->getSiteTitle()."»... \n\n".
-			$RSS->CleanUp_HTML($RSS->getRssItemTitle()).": ".
+			$RSS->CleanUp_HTML($RSS->getRssItemTitle()).": \n".
 			$RSS->CleanUp_HTML($RSS->getRssItemText());
 	}
 	else {
 		$joke_telegram_text = 
 			"С сайта «[".$RSS->getSiteTitle()."](".$RSS->getSiteLink().")»... \n\n".
-			"[".$RSS->CleanUp_HTML($RSS->getRssItemTitle())."](".$RSS->getRssItemLink()."): ".
+			"[".$RSS->CleanUp_HTML($RSS->getRssItemTitle())."](".$RSS->getRssItemLink()."): \n".
 			$RSS->CleanUp_HTML($RSS->getRssItemText());
 	}
 	
