@@ -1,5 +1,4 @@
 <?php
-
 #
 # Класс для работы с RSS-лентами сайтов
 #
@@ -23,6 +22,7 @@ class RSS {
   private $site_rss_url;
   private $site_title;
   private $site_link;
+  private $site_disable_preview;
   
   # Свойства rss-элементов
   private $rss_data;
@@ -64,6 +64,9 @@ class RSS {
     
     // Устанавливаем ссылку сайта (берем из RSS-ленты)
     $this->setSiteLink();
+    
+    // Устанавливаем флаг необходимости предпросмотра ссылок в сообщении (для Телеграма)
+    $this->setSiteDisablePreview();
     
     // Устанавливаем случайный элемент RSS-ленты
     $this->setRssRandomItem();
@@ -331,6 +334,25 @@ class RSS {
   
   
   #
+  # Метод получает и проверяет значение параметра: нужен ли предпросмотр ссылок в сообщении (для Телеграма).
+  #
+  public function setSiteDisablePreview() {
+    
+    if ($this->getSiteAttribute('preview') == "yes") {
+      $this->site_disable_preview = "no";
+    } 
+    else {
+      $this->site_disable_preview = "yes";
+    }
+    
+    return $this;
+    
+  }
+  
+  
+  
+  
+  #
   # Метод устанавливает заголовок случайного элемента RSS-ленты.
   #
   public function setRssItemTitle() {
@@ -438,7 +460,7 @@ class RSS {
 	  	$s = str_replace('<p>', "\n", $s); // replace start of paragrapf -> new line
 	  	$s = str_replace('</p>', ' ', $s); // replace end of paragrapf -> space
 	  	$s = str_replace(array('<br>','<br/>','<br />'), "\n", $s); // replace line break -> new line
-	  	
+		
 		$s = strip_tags($s, '<img>'); // remove all HTML tags, exclude <img>
 	  	
 	  	$s = preg_replace('#<img.*src=(\'|")(http.*)(\'|").*>#i', '${2}', $s); // replace <img> tag -> link to the image
@@ -452,5 +474,4 @@ class RSS {
   
   
 }
-
 ?>
