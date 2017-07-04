@@ -14,21 +14,33 @@ if ($_GET['format'] == 'json') {
 	$button_help_text = "Показать справку";
 	
     
+    # сообщение в текстовом ответе
     $joke_plain_text = 
 		"С сайта «".$RSS->getSiteTitle()."»... \n\n".
-		$RSS->getRssItemTitle()." (".$RSS->getRssItemLink()."): \n".
+		$RSS->CleanUp_HTML($RSS->getRssItemTitle())." (".$RSS->getRssItemLink()."): \n".
 		$RSS->CleanUp_HTML($RSS->getRssItemText());
-						
-	$joke_telegram_text = 
-		"С сайта «[".$RSS->getSiteTitle()."](".$RSS->getSiteLink().")»... \n\n".
-		"[".$RSS->getRssItemTitle()."](".$RSS->getRssItemLink()."): \n".
-		$RSS->CleanUp_HTML($RSS->getRssItemText());
-		
+	
+	# сообщение для Telegram
+	if ($RSS->getSiteDisablePreview() == "no") {
+		$joke_telegram_text = 
+			"С сайта «".$RSS->getSiteTitle()."»... \n\n".
+			$RSS->CleanUp_HTML($RSS->getRssItemTitle()).": \n".
+			$RSS->CleanUp_HTML($RSS->getRssItemText());
+	}
+	else {
+		$joke_telegram_text = 
+			"С сайта «[".$RSS->getSiteTitle()."](".$RSS->getSiteLink().")»... \n\n".
+			"[".$RSS->CleanUp_HTML($RSS->getRssItemTitle())."](".$RSS->getRssItemLink()."): \n".
+			$RSS->CleanUp_HTML($RSS->getRssItemText());
+	}
+	
+	# сообщение для Slack
 	$joke_slack_text = 
 		"С сайта «<".$RSS->getSiteLink()."|".$RSS->getSiteTitle().">»... \n\n".
-		"<".$RSS->getRssItemLink()."|".$RSS->getRssItemTitle().">: \n".
+		"<".$RSS->getRssItemLink()."|".$RSS->CleanUp_HTML($RSS->getRssItemTitle()).">: \n".
 		$RSS->CleanUp_HTML($RSS->getRssItemText());
-    
+	
+	    
     $arr = array(
 		// ответ на запрос
 		'speech' => $joke_plain_text, 
@@ -42,7 +54,7 @@ if ($_GET['format'] == 'json') {
 			// для Telegram
 			'telegram' => array (
 				'parse_mode' => 'Markdown',
-				'disable_web_page_preview' => 'yes',
+				'disable_web_page_preview' => $RSS->getSiteDisablePreview(),
 				'text' => $joke_telegram_text,
 				'reply_markup' => array (
 					'keyboard' => array (
