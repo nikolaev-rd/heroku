@@ -1,6 +1,6 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-# Скрипты для интеграции чат-бота [Joker](https://joker-site.herokuapp.com/) с сервисом [API.AI](https://api.ai/)
+# Скрипты для интеграции чат-бота [Joker](https://nikolaev-rd.github.io/joker-site/) с сервисом [API.AI](https://api.ai/)
 Скрипт получает URL-адрес RSS-ленты указанного сайта (если сайт не указан, то берет рандомный сайт). Адрес RSS-ленты берется из [конфига](rss/sites.ini) в блоке, соответствующем указанному названию сайта. Далее парсит RSS-ленту и выдает требуемые поля в формате HTML/JSON.
 Это необходимо для [интеграции с сервисом API.AI с помощью webhook](https://docs.api.ai/docs/webhook) (в JSON-ответе используеся [минимальное кол-во полей](https://docs.api.ai/docs/webhook#section-format-of-response-from-the-service)).
 
